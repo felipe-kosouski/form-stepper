@@ -47,7 +47,7 @@
 
                   <v-col cols="2">
                     <v-select
-                      v-model="answers[index].skillLevel"
+                      v-model="answers[n-1][index].skillLevel"
                       outlined
                       :items="selectLevels"
                       label="Selecione"
@@ -56,13 +56,13 @@
                     ></v-select>
                   </v-col>
                   <v-col cols="2">
-                    <v-textarea v-model="answers[index].feedBack" outlined rows="3"></v-textarea>
+                    <v-textarea v-model="answers[n-1][index].feedBack" outlined rows="3"></v-textarea>
                   </v-col>
                   <v-col cols="2">
-                    <v-textarea v-model="answers[index].selfAppraisal" outlined rows="3"></v-textarea>
+                    <v-textarea v-model="answers[n-1][index].selfAppraisal" outlined rows="3"></v-textarea>
                   </v-col>
                   <v-col cols="3">
-                    <v-textarea v-model="answers[index].feedForward" outlined rows="3"></v-textarea>
+                    <v-textarea v-model="answers[n-1][index].feedForward" outlined rows="3"></v-textarea>
                   </v-col>
                 </v-row>
               </v-form>
@@ -104,7 +104,7 @@ export default {
       appraisalCompetences: [
         {
           competence: {
-            competenceId: 1,
+            competenceId: 6,
             name: "Competências de Gestão",
             competenceSkills: [
               {
@@ -142,7 +142,7 @@ export default {
         },
         {
           competence: {
-            competenceId: 2,
+            competenceId: 5,
             name: "Competências Técnicas",
             competenceSkills: [
               {
@@ -215,14 +215,34 @@ export default {
       this.appraisal.appraisalCompetences.forEach(competence => {
         this.competences.push(competence);
       });
-      this.competences.forEach(item => {
-        item.competence.competenceSkills.forEach(compSkill => {
-          this.addAnswers(
-            item.competence.competenceId,
-            compSkill.skill.skillId
-          );
-        });
-      });
+      for (let index = 0; index < this.competences.length; index++) {
+        const item = this.competences[index];
+        this.answers.push([]);
+        for (
+          let sk_index = 0;
+          sk_index < item.competence.competenceSkills.length;
+          sk_index++
+        ) {
+          const compSkill = item.competence.competenceSkills[sk_index];
+          this.answers[index].push({
+            competenceId: item.competence.competenceId,
+            skillId: compSkill.skill.skillId,
+            skillLevel: "",
+            feedBack: "",
+            selfAppraisal: "",
+            feedForward: ""
+          });
+        }
+      }
+      //   this.competences.forEach(item => {
+      //     this.answers.push([]);
+      //     item.competence.competenceSkills.forEach(compSkill => {
+      //       this.addAnswers(
+      //         item.competence.competenceId,
+      //         compSkill.skill.skillId
+      //       );
+      //     });
+      //   });
     },
     previous(n) {
       if (this.e1 == 1) {
@@ -231,8 +251,8 @@ export default {
         this.e1 = n - 1;
       }
     },
-    addAnswers(competenceId, skillId) {
-      this.answers.push({
+    addAnswers(competenceIndex, competenceId, skillId) {
+      this.answers[competenceIndex - 1].push({
         competenceId: competenceId,
         skillId: skillId,
         skillLevel: "",

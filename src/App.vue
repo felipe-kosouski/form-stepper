@@ -1,23 +1,23 @@
 <template>
   <v-app>
     <v-content>
-      <stepper-form/>
+      <stepper-form />
     </v-content>
   </v-app>
 </template>
 
 <script>
-import StepperForm from './components/StepperForm';
+import StepperForm from "./components/StepperForm";
 
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
-    StepperForm,
+    StepperForm
   },
 
   data: () => ({
     //
-  }),
+  })
 };
 </script>
